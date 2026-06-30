@@ -100,7 +100,8 @@ Für Büroarbeit, Dokumentenerstellung und Kommunikation. Empfohlene Distributio
 |-------------------|--------------------------|----------------------------------------------------|
 | Office            | LibreOffice              | Writer, Calc, Impress – voller OOXML-Import/Export |
 | E-Mail & Kalender | Thunderbird              | mit DAV-Erweiterung (TbSync) für CalDAV/CardDAV    |
-| Dateiablage       | Nextcloud-Desktop-Client | automatischer Sync, Konfliktbehandlung             |
+| Dateiablage       | Nautilus + WebDAV (Nextcloud) | Direktzugriff auf Nextcloud-Dateien im Dateimanager – vergleichbar mit Explorer + OneDrive/SharePoint |
+| Dateiablage (offline) | Nextcloud-Desktop-Client | lokaler Sync für Offline-Arbeit, automatische Konfliktbehandlung |
 | Kommunikation     | Element (Matrix-Client)  | Chat und Videoanruf                                |
 | PDF               | Okular / Evince          | Anzeige; Export aus LibreOffice                    |
 | Browser           | Firefox                  | mit uBlock Origin                                  |
@@ -278,7 +279,7 @@ Das Konzept ist praxistauglich und kann schrittweise eingeführt werden. Empfohl
 
 - **Phase 1 – Kern-Infrastruktur: Nextcloud + Postfix/Dovecot + WireGuard auf eigenem Server oder VPS**
 
-- **Phase 2 – Client-Rollout: LibreOffice, Thunderbird (mit TbSync), Nextcloud-Desktop-Client, Element**
+- **Phase 2 – Client-Rollout: LibreOffice, Thunderbird (mit TbSync), Nautilus-WebDAV-Anbindung an Nextcloud, Element** (optional: Nextcloud-Desktop-Client für Offline-Sync)
 
 - **Phase 3 – Kommunikation: Matrix/Synapse für Chat und Videokonferenz**
 
@@ -452,7 +453,7 @@ Bei einer Migration von Microsoft 365 auf den OSS-Stack geht keine Funktion verl
 | Outlook (Web/OWA)            | Webmail                             | Nextcloud Mail / Roundcube             | 3           |
 | Word / Excel / PowerPoint    | Office-Suite (lokal)                | LibreOffice                            | 4           |
 | Office Online                | Office-Suite (Browser)              | Collabora Online (optional)            | 3           |
-| OneDrive                     | Dateisync, Cloud-Speicher           | Nextcloud + Desktop-Client             | 3, 4        |
+| OneDrive                     | Dateisync, Cloud-Speicher           | Nextcloud + Nautilus-WebDAV (Desktop-Client für Offline) | 3, 4 |
 | SharePoint                   | Dokumentenmanagement, Intranet      | Nextcloud + Wiki (optional)            | 3           |
 | Teams (Chat)                 | Messaging, Kanäle                   | Matrix / Element                       | 3, 4        |
 | Teams (Video)                | Videokonferenz                      | Element / OpenTalk / Jitsi             | 3           |
