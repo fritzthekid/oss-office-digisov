@@ -992,7 +992,7 @@ tpm2-tools, systemd-cryptenroll, clevis/tang bieten vergleichbare Funktionalitä
 
 [^26]: OVHcloud: kein US CLOUD Act Risiko: [ovhcloud.com – „Your service is not subject to the US CLOUD Act"](https://www.ovhcloud.com/en/vps/)
 
-[^27]: Open Telekom Cloud BSI C5 Typ 2: [telekom.com – OTC BSI C5 Zertifikat](https://www.telekom.com/de/medien/medieninformationen/detail/open-telekom-cloud-erhaelt-bsi-c5-zertifikat-605188)
+[^27]: Open Telekom Cloud BSI C5 Typ 2: [telekom.com – OTC BSI C5 Zertifikat](https://www.t-systems.com/de/de/cloud-services/loesungen/cloud-infrastruktur/private-cloud/open-sovereign-cloud)
 
 [^28]: Open Telekom Cloud Preismodell Computing: [public.t-cloud.com – Preismodelle Computing](https://public.t-cloud.com/de/preise/preismodelle/computing-container)
 
