@@ -1,16 +1,44 @@
-**Digitale Souveränität**
+# Digitale Souveränität
 
-OSS-Plattformkonzept für dezentrale Arbeitsumgebungen
+**OSS-Plattformkonzept für dezentrale Arbeitsumgebungen**
 
-*Entwurf – Juni 2026 Eduard Moser & claude.ai*
+*Entwurf – Juni 2026 · Eduard Moser & claude.ai*
 
-# 1 Zielsetzung und Grundprinzipien
+---
 
-Dieses Konzept beschreibt eine vollständig auf Open-Source-Software basierende Arbeitsplattform, die als praxistaugliche Alternative zu zentral verwalteten Diensten wie Microsoft 365 oder openDesk positioniert ist. Im Mittelpunkt steht das Prinzip der digitalen Souveränität: Kontrolle über eigene Daten, Freiheit von Herstellerabhängigkeiten und Nachvollziehbarkeit durch quelloffene Software.
+## Inhaltsverzeichnis
 
-Das Konzept folgt dem „thin server / fat client“-Prinzip: Server übernehmen ausschließlich Infrastrukturaufgaben (Ablage, Synchronisation, Kommunikation), während rechenintensive Aufgaben auf den Clients verbleiben. Dies steht im bewussten Kontrast zu server-zentrischen Ansätzen wie openDesk, die Anwendungslogik und Rendering auf zentrale Infrastruktur verlagern.
+1. Einleitung
+2. Grundprinzipien
+3. Architekturübersicht
+4. Client-Typen und Paketempfehlungen
+5. Exchange-Funktionalität im OSS-Stack
+6. Stärken und Schwächen gegenüber openDesk
+7. Datensouveränität
+8. Empfehlung und Migrationspfad
 
-## Grundprinzipien
+Anhang A – Vergleich OSS-Ansätze für digitale Souveränität
+Anhang B – Proxmox VE als Infrastrukturschicht für mittlere Organisationen
+Anhang C – Kostenvergleich europäischer IaaS-Anbieter
+Anhang D – TPM-gestützte Authentifizierung
+
+Quellenverzeichnis
+
+---
+
+# 1 Einleitung
+
+Die zunehmende Abhängigkeit von proprietären Cloud-Plattformen — insbesondere Microsoft 365 — stellt Organisationen vor grundlegende Fragen der digitalen Souveränität: Wer kontrolliert die eigenen Daten? Wie vermeidet man Herstellerabhängigkeiten? Und wie lässt sich eine praxistaugliche Arbeitsumgebung aufbauen, die ohne proprietäre Software auskommt?
+
+Dieses Konzept beschreibt eine vollständig auf Open-Source-Software basierende Arbeitsplattform, die als Alternative zu zentral verwalteten Diensten wie Microsoft 365 oder dem Bund-Länder-Projekt openDesk positioniert ist. Es richtet sich an kleine und mittlere Organisationen, NGOs, Initiativen und Einzelpersonen, die digitale Souveränität nicht nur als politisches Ziel, sondern als praktische Anforderung verstehen.
+
+Der Ansatz folgt dem „thin server / fat client"-Prinzip: Server übernehmen ausschließlich Infrastrukturaufgaben (Ablage, Synchronisation, Kommunikation), während rechenintensive Aufgaben — von der Textverarbeitung bis zur KI-Inferenz — auf den Clients verbleiben. Dies steht im bewussten Kontrast zu server-zentrischen Ansätzen wie openDesk, die Anwendungslogik und Rendering auf zentrale Infrastruktur verlagern.
+
+Das Dokument gliedert sich in acht Kapitel und vier Anhänge. Die Kapitel 2–4 beschreiben Prinzipien, Architektur und empfohlene Software. Kapitel 5 zeigt, wie Exchange-Funktionalität im OSS-Stack abgebildet wird. Kapitel 6 und 7 behandeln den Vergleich mit openDesk und das Thema Datensouveränität. Kapitel 8 gibt eine konkrete Empfehlung für die schrittweise Einführung. Die Anhänge vertiefen den Vergleich mit dem Schleswig-Holstein-Modell (A), die Proxmox-Infrastruktur für mittlere Organisationen (B), einen europäischen IaaS-Kostenvergleich (C) und TPM-gestützte Authentifizierung (D).
+
+# 2 Grundprinzipien
+
+Im Mittelpunkt steht das Prinzip der digitalen Souveränität: Kontrolle über eigene Daten, Freiheit von Herstellerabhängigkeiten und Nachvollziehbarkeit durch quelloffene Software.
 
 - Ausschließlich Open-Source-Software (OSI-zertifiziert oder vergleichbar)
 
@@ -24,11 +52,11 @@ Das Konzept folgt dem „thin server / fat client“-Prinzip: Server übernehmen
 
 - Datensouveränität: Daten liegen wo der Betreiber es bestimmt
 
-# 2 Architekturübersicht
+# 3 Architekturübersicht
 
 Die Plattform gliedert sich in drei Schichten: Server-Infrastruktur, offene Protokolle und Client-Ebene.
 
-## 2.1 Server-Infrastruktur
+## 3.1 Server-Infrastruktur
 
 Der Server ist bewusst dünn gehalten. Er stellt Speicher, Kalender, Kommunikation und sicheren Zugang bereit – keine Anwendungslogik, kein serverseitiges Rendering. Damit bleibt die Last gering und die Hardware-Anforderungen moderat (z. B. Raspberry Pi 4 oder kleiner VPS).
 
@@ -44,7 +72,7 @@ Der Server ist bewusst dünn gehalten. Er stellt Speicher, Kalender, Kommunikati
 | Reverse Proxy           | nginx / Caddy               | HTTPS / TLS               | Zertifikate, Routing                          |
 | Authentifizierung       | Keycloak (optional)         | OIDC / SAML               | Single Sign-On                                |
 
-## 2.2 Protokollschicht
+## 3.2 Protokollschicht
 
 Alle Dienste kommunizieren ausschließlich über offene, standardisierte Protokolle. Dadurch ist jede Komponente austauschbar, ohne die Gesamtarchitektur zu berühren.
 
@@ -58,13 +86,13 @@ Alle Dienste kommunizieren ausschließlich über offene, standardisierte Protoko
 
 - WireGuard – VPN-Zugang
 
-## 2.3 Client-Ebene
+## 3.3 Client-Ebene
 
 Auf der Client-Ebene liegt die eigentliche Arbeitsleistung. Clients sind vollständig funktionsfähig auch ohne aktive Serververbindung; Synchronisation erfolgt bei Verbindungsaufbau.
 
-# 3 Client-Typen und Paketempfehlungen
+# 4 Client-Typen und Paketempfehlungen
 
-## 3.1 Standard-Arbeitsplatz (Linux-Desktop)
+## 4.1 Standard-Arbeitsplatz (Linux-Desktop)
 
 Für Büroarbeit, Dokumentenerstellung und Kommunikation. Empfohlene Distribution: Ubuntu LTS, Debian stable oder Linux Mint.
 
@@ -78,7 +106,7 @@ Für Büroarbeit, Dokumentenerstellung und Kommunikation. Empfohlene Distributio
 | Browser           | Firefox                  | mit uBlock Origin                                  |
 | Passwörter        | KeePassXC                | lokal, kein Cloud-Zwang                            |
 
-## 3.2 Entwickler-Workstation
+## 4.2 Entwickler-Workstation
 
 Für Softwareentwicklung, Skripting und Administration. Setzt auf einem Standard-Desktop auf.
 
@@ -91,7 +119,7 @@ Für Softwareentwicklung, Skripting und Administration. Setzt auf einem Standard
 | Skriptsprachen    | Python 3, Bash, Node.js   |                                               |
 | Datenbank-GUI     | DBeaver                   | OSS, unterstützt alle gängigen DBs            |
 
-## 3.3 KI-Workstation (lokale Inferenz)
+## 4.3 KI-Workstation (lokale Inferenz)
 
 Für rechenintensive KI-Aufgaben lokal – kein Cloud-Dienst, keine Datenweitergabe. Empfohlene Hardware: dedizierter Desktop mit diskreter GPU (z. B. RTX 4070 Ti oder 5070 Ti).
 
@@ -103,7 +131,7 @@ Für rechenintensive KI-Aufgaben lokal – kein Cloud-Dienst, keine Datenweiterg
 | Vektor-DB       | Chroma / Qdrant            | für RAG-Anwendungen                                     |
 | GPU-Stack       | CUDA / ROCm + nvidia-smi   | je nach GPU-Hersteller                                  |
 
-## 3.4 Mobile (Android / iOS)
+## 4.4 Mobile (Android / iOS)
 
 | **Funktion**        | **Android**            | **iOS**                                   |
 |---------------------|------------------------|-------------------------------------------|
@@ -114,7 +142,7 @@ Für rechenintensive KI-Aufgaben lokal – kein Cloud-Dienst, keine Datenweiterg
 | VPN                 | WireGuard-App          | WireGuard-App                             |
 | Passwörter          | KeePassDX              | Strongbox                                 |
 
-# 4 Exchange-Funktionalität im OSS-Stack
+# 5 Exchange-Funktionalität im OSS-Stack
 
 Microsoft Exchange ist in Office-365-Umgebungen mehr als ein Mailserver – er bündelt E-Mail, Kalender, Kontakte, Aufgaben, Ressourcenbuchung und Push-Synchronisation. Im OSS-Stack ist diese Funktionalität dezentral über mehrere Komponenten abgebildet, die über offene Standards interagieren.
 
@@ -132,15 +160,15 @@ Microsoft Exchange ist in Office-365-Umgebungen mehr als ein Mailserver – er b
 | Kalendereinladungen (extern) | Postfix + iCal                  | iCal/RFC 5545         | Interoperabel; Outlook-Nutzer außen: Z-Push nötig |
 | ActiveSync (Outlook-Clients) | Z-Push (optional)               | ActiveSync            | Nur nötig wenn Outlook-Clients gewünscht          |
 
-### **Hinweis zu Outlook-Kompatibilität**
+### Hinweis zu Outlook-Kompatibilität
 
 Outlook-Clients erwarten intern ActiveSync oder MAPI, nicht CalDAV. In einer homogenen OSS-Umgebung ist das kein Problem – Thunderbird und native Kalender-Apps kommunizieren direkt per CalDAV/CardDAV. Sobald Outlook-Nutzer integriert werden müssen, ist Z-Push als ActiveSync-Brücke der pragmatische Weg. Z-Push ist Open Source (AGPLv3) und in Nextcloud integrierbar.
 
-# 5 Stärken und Schwächen gegenüber openDesk
+# 6 Stärken und Schwächen gegenüber openDesk
 
 openDesk ist der Bund-Länder-Ansatz für souveräne Bürosoftware in der öffentlichen Verwaltung. Er hat seine Berechtigung in stark regulierten, zentralisierten IT-Umgebungen. Das vorliegende Konzept verfolgt einen anderen Ansatz und hat andere Stärken.
 
-## Stärken dieses Konzepts
+## 6.1 Stärken dieses Konzepts
 
 - **Lokale Rechenleistung wird genutzt**
 
@@ -166,7 +194,7 @@ openDesk ist der Bund-Länder-Ansatz für souveräne Bürosoftware in der öffen
 
 - openDesk setzt faktisch auf bestimmte Linux-Distributionen; dieses Konzept ist distributionsagnostisch
 
-## Schwächen und Grenzen
+## 6.2 Schwächen und Grenzen
 
 - **Kein echtes Co-Editing im Standardfall**
 
@@ -190,6 +218,8 @@ openDesk ist der Bund-Länder-Ansatz für souveräne Bürosoftware in der öffen
 
 - openDesk wird BSI-begleitet; dieses Konzept muss Compliance-Anforderungen (z. B. BSI Grundschutz) eigenständig erfüllen
 
+## 6.3 Vergleichstabelle
+
 | **Kriterium**              | **Dieses Konzept**           | **openDesk**                 |
 |----------------------------|------------------------------|------------------------------|
 | Rechenleistung             | Client (fat)                 | Server (thin client)         |
@@ -201,9 +231,9 @@ openDesk ist der Bund-Länder-Ansatz für souveräne Bürosoftware in der öffen
 | Vendor Lock-in             | Keiner                       | Keiner (beide OSS)           |
 | OOXML-Kompatibilität (PDF) | Konsistent                   | Konsistent                   |
 
-# 6 Datensouveränität
+# 7 Datensouveränität
 
-## 6.1 Prinzipien
+## 7.1 Prinzipien
 
 - Alle Daten liegen auf Infrastruktur unter Kontrolle des Betreibers (On-Premise oder dedizierter VPS)
 
@@ -213,7 +243,7 @@ openDesk ist der Bund-Länder-Ansatz für souveräne Bürosoftware in der öffen
 
 - Offene Protokolle ermöglichen Migration ohne Datenverlust
 
-## 6.2 Hosting-Szenarien
+## 7.2 Hosting-Szenarien
 
 | **Szenario**                | **Infrastruktur**                         | **Souveränitätsniveau** | **Geeignet für**                   |
 |-----------------------------|-------------------------------------------|-------------------------|------------------------------------|
@@ -222,7 +252,7 @@ openDesk ist der Bund-Länder-Ansatz für souveräne Bürosoftware in der öffen
 | Shared Hosting OSS-Anbieter | Hetzner Storage Box + VPS                 | Mittel-hoch             | Wenn eigene Hardware nicht möglich |
 | Hyperscaler (AWS/Azure)     | Nein – CLOUD Act Risiko                   | Nicht akzeptabel        | –                                  |
 
-## 6.3 Rechtliche Rahmenbedingungen
+## 7.3 Rechtliche Rahmenbedingungen
 
 - DSGVO: Verarbeitungsverzeichnis, Auftragsverarbeitungsvertrag (AVV) bei externem Hosting
 
@@ -232,7 +262,7 @@ openDesk ist der Bund-Länder-Ansatz für souveräne Bürosoftware in der öffen
 
 - Gesundheitsdaten (z. B. Psychotherapiepraxis): erhöhte Anforderungen nach § 9 DSGVO; On-Premise oder nachweislich DSGVO-konformer EU-Anbieter obligatorisch
 
-## 6.4 Backup und Verfügbarkeit
+## 7.4 Backup und Verfügbarkeit
 
 - Restic + rclone – verschlüsselte Backups auf eigene oder Hetzner Storage Box
 
@@ -242,7 +272,7 @@ openDesk ist der Bund-Länder-Ansatz für souveräne Bürosoftware in der öffen
 
 - Monitoring: Checkmk (OSS-Edition) oder Grafana + Prometheus
 
-# 7 Empfehlung und nächste Schritte
+# 8 Empfehlung und Migrationspfad
 
 Das Konzept ist praxistauglich und kann schrittweise eingeführt werden. Empfohlene Reihenfolge:
 
@@ -256,13 +286,15 @@ Das Konzept ist praxistauglich und kann schrittweise eingeführt werden. Empfohl
 
 Collabora wird bewusst als optional markiert: Im Regelfall reicht LibreOffice lokal + Nextcloud als reiner Dateisync. Co-Editing ist die Ausnahme, nicht die Regel – und wenn, dann auf dedizierter Hardware, nicht auf dem Kern-Server.
 
+---
+
 # Anhang A – Vergleich OSS-Ansätze für digitale Souveränität
 
 Dieser Anhang stellt das vorliegende Konzept in den Kontext zweier etablierter öffentlicher Initiativen: dem Ansatz des Landes Schleswig-Holstein und dem Bund-Länder-Projekt openDesk. Alle drei Ansätze verfolgen dasselbe Ziel — Unabhängigkeit von proprietären US-Produkten — setzen aber unterschiedliche Schwerpunkte.
 
-# A.1 Schleswig-Holstein: Praxisbeispiel Landesverwaltung
+## A.1 Schleswig-Holstein: Praxisbeispiel Landesverwaltung
 
-## A.1.1 Was wurde umgesetzt?
+### A.1.1 Was wurde umgesetzt?
 
 Im Oktober 2025 schloss die Landesverwaltung Schleswig-Holstein die Migration von Microsoft Exchange und Outlook auf Open-Xchange und Thunderbird ab — 44.000 Postfächer, über 100 Millionen E-Mails und Kalendereinträge in sechs Monaten.[^1] Das Land ist damit das erste deutsche Bundesland, das Exchange vollständig abgelöst hat.
 
@@ -282,13 +314,13 @@ Der Gesamtstack umfasst:
 
 - **Dataport AöR** — IT-Dienstleister der norddeutschen Länder, verantwortlich für Betrieb[^6]
 
-## A.1.2 Wirtschaftliche Bilanz
+### A.1.2 Wirtschaftliche Bilanz
 
-Das Land berichtet von Einsparungen über 15 Millionen Euro jährlich an Lizenzkosten, denen 2026 einmalig 9 Millionen Euro Migrationsaufwand gegenüberstehen.[^7] Bis Dezember 2025 waren bereits 80 % der Arbeitsplätze umgestellt, mit positivem Zwischenfazit.[^8]
+Das Land berichtet von Einsparungen über 15 Millionen Euro jährlich an Lizenzkosten, denen 2026 einmalig 9 Millionen Euro Migrationsaufwand gegenüberstehen.[^7] Bis Dezember 2025 waren bereits 80 % der Arbeitsplätze umgestellt, mit positivem Zwischenfazit.[^8]
 
-Die verbleibenden 20 % der Arbeitsplätze benötigen noch Microsoft Office, weil Fachverfahren technische Abhängigkeiten bedingen. Migrationspfade sind vereinbart.
+Die verbleibenden 20 % der Arbeitsplätze benötigen noch Microsoft Office, weil Fachverfahren technische Abhängigkeiten bedingen. Migrationspfade sind vereinbart.
 
-# A.2 Protokolle: Warum alle drei Ansätze kompatibel sind
+## A.2 Protokolle: Warum alle drei Ansätze kompatibel sind
 
 Der entscheidende Punkt: Open-Xchange, Nextcloud und Postfix/Dovecot sprechen dieselben offenen Protokolle. Die Schnittstellen sind identisch — lediglich die Implementierungsschicht darüber unterscheidet sich.[^9][^10]
 
@@ -307,7 +339,7 @@ Das bedeutet: Ein Thunderbird-Client, der mit Open-Xchange kommuniziert, könnte
 
 Einzige Ausnahme: ActiveSync für Outlook-Clients. Open-Xchange unterstützt ActiveSync nativ; im eigenen Konzept ist dafür Z-Push als Brücke nötig.[^11]
 
-# A.3 Drei Ansätze im Vergleich
+## A.3 Drei Ansätze im Vergleich
 
 | **Kriterium**      | **Schleswig-Holstein**           | **openDesk (ZenDiS)**            | **Eigenes Konzept**             |
 |--------------------|----------------------------------|----------------------------------|---------------------------------|
@@ -323,9 +355,9 @@ Einzige Ausnahme: ActiveSync für Outlook-Clients. Open-Xchange unterstützt Act
 | BSI-Begleitung     | Geplant                          | Ja (ZenDiS)                      | Eigenverantwortung              |
 | Lizenzkosten       | Stark reduziert (\>15 Mio. €/a)  | Stark reduziert                  | Minimal                         |
 
-# A.4 Wesentliche Unterschiede und Begründungen
+## A.4 Wesentliche Unterschiede und Begründungen
 
-## A.4.1 Open-Xchange vs. Postfix/Dovecot/Nextcloud
+### A.4.1 Open-Xchange vs. Postfix/Dovecot/Nextcloud
 
 Open-Xchange ist eine integrierte Groupware-Plattform: Mail, Kalender, Kontakte und Dateiablage in einem Produkt mit eigenem Web-Frontend. Das ist für große, zentral verwaltete Umgebungen ein Vorteil — ein System, ein Admin-Interface, ein Supportvertrag.
 
@@ -339,7 +371,7 @@ Der eigene Konzeptansatz trennt diese Funktionen bewusst:
 
 Das ergibt mehr Flexibilität und geringere Abhängigkeit von einem einzelnen Produkt, erfordert aber mehr Konfigurationsaufwand und Admin-Kenntnisse.
 
-## A.4.2 Thin Client (SH/openDesk) vs. Fat Client (eigenes Konzept)
+### A.4.2 Thin Client (SH/openDesk) vs. Fat Client (eigenes Konzept)
 
 Schleswig-Holstein und openDesk setzen auf verwaltete Arbeitsplätze, bei denen Anwendungslogik zunehmend server- oder browser-seitig läuft. Das vereinfacht die Client-Administration erheblich — besonders in einer Verwaltung mit heterogenen, schwer kontrollierbaren Endgeräten.
 
@@ -353,13 +385,13 @@ Das eigene Konzept verfolgt das Gegenmodell: Der Client ist der Arbeitspferd. Da
 
 - Datenschutz bei sensiblen Aufgaben: Dokumente verlassen den Client nicht für serverseitiges Rendering
 
-## A.4.3 Univention Nubus vs. eigenes IdM
+### A.4.3 Univention Nubus vs. eigenes IdM
 
 Univention Nubus (ehemals UCS) ist eine vollständige Identity-Management-Plattform für Unternehmen und Behörden, die Active Directory funktional ersetzt.[^12] Für Schleswig-Holstein mit ~30.000 Nutzern und komplexen Rollenstrukturen ist das die richtige Wahl.
 
 Im eigenen Konzept ist Keycloak als optionale Komponente vorgesehen — leichtgewichtiger, aber weniger umfangreich. Für kleine Gruppen genügt oft auch lokale Nutzerverwaltung (LDAP) direkt in Nextcloud und Dovecot.
 
-## A.4.4 openDesk-Spezifika
+### A.4.4 openDesk-Spezifika
 
 openDesk (entwickelt durch ZenDiS im Auftrag von Bund und Ländern) ist der zentralisierte Ansatz für die öffentliche Verwaltung.[^13] Es kombiniert ähnliche Komponenten wie SH (Open-Xchange, Nextcloud, Collabora, OpenTalk), setzt aber auf eine gemeinsame, BSI-begleitete Plattform.
 
@@ -373,7 +405,7 @@ Kernunterschiede zum eigenen Konzept:
 
 - Kein fat-client-Prinzip — lokale GPU- und CPU-Ressourcen werden nicht adressiert
 
-# A.5 Einordnung und Fazit
+## A.5 Einordnung und Fazit
 
 Alle drei Ansätze sind technisch kompatibel, weil sie auf denselben offenen Protokollen aufbauen. Ein Wechsel zwischen den Ansätzen — etwa späterer Umstieg von eigenem Postfix/Dovecot auf Open-Xchange — wäre ohne Datenverlust möglich, da CalDAV-, CardDAV- und IMAP-Daten standardisiert sind.
 
@@ -388,17 +420,19 @@ Die Wahl des Ansatzes hängt primär von Skalierung und Betriebsmodell ab:
 
 Das Schleswig-Holstein-Projekt ist dabei das bisher überzeugendste Praxisbeispiel, dass der OSS-Weg in großem Maßstab funktioniert — wirtschaftlich, technisch und politisch. Es bestätigt die Grundannahmen des eigenen Konzepts und liefert konkrete Migrationserfahrungen, von denen auch kleinere Initiativen profitieren können.
 
+---
+
 # Anhang B – Proxmox VE als Infrastrukturschicht für mittlere Organisationen
 
 Dieser Anhang beschreibt, wie Proxmox Virtual Environment (VE) als optionale Infrastrukturschicht unter dem OSS-Plattformkonzept eingesetzt werden kann. Im Fokus steht der Anwendungsfall mittlerer Organisationen (50–500 Nutzer) mit Anforderungen an Ausfall­sicherheit und zentralisiertes Ressourcenmanagement.
 
-# B.1 Warum Proxmox VE – Einordnung und Abgrenzung
+## B.1 Warum Proxmox VE – Einordnung und Abgrenzung
 
-## B.1.1 Was Proxmox VE ist
+### B.1.1 Was Proxmox VE ist
 
 Proxmox VE ist eine Open-Source-Plattform für Server-Virtualisierung, die zwei Technologien vereint: KVM (Kernel-based Virtual Machine) für vollständige virtuelle Maschinen und LXC (Linux Containers) für leichtgewichtige Container.[^14] Beides wird über eine einheitliche Web-Oberfläche und API verwaltet. Proxmox ist in Debian GNU/Linux integriert und vollständig quelloffen (AGPLv3).
 
-## B.1.2 Abgrenzung zu OpenStack und VMware
+### B.1.2 Abgrenzung zu OpenStack und VMware
 
 | **Kriterium**       | **Proxmox VE**           | **OpenStack**             | **VMware vSphere** |
 |---------------------|--------------------------|---------------------------|--------------------|
@@ -413,7 +447,7 @@ Proxmox VE ist eine Open-Source-Plattform für Server-Virtualisierung, die zwei 
 
 **Proxmox ist der direkte OSS-Ersatz für VMware vSphere.** Nach der Broadcom-Übernahme von VMware 2023 und den massiven Lizenzpreiserhöhungen haben viele Organisationen — auch öffentliche Einrichtungen — auf Proxmox migriert.[^15]
 
-## B.1.3 Wann Proxmox sinnvoll ist
+### B.1.3 Wann Proxmox sinnvoll ist
 
 Proxmox als Infrastrukturschicht lohnt sich, wenn mindestens zwei der folgenden Bedingungen zutreffen:
 
@@ -439,11 +473,11 @@ Proxmox als Infrastrukturschicht lohnt sich, wenn mindestens zwei der folgenden 
 </tbody>
 </table>
 
-# B.2 Cluster-Architektur und Ausfallsicherheit
+## B.2 Cluster-Architektur und Ausfallsicherheit
 
-## B.2.1 Das Quorum-Prinzip
+### B.2.1 Das Quorum-Prinzip
 
-Proxmox-Cluster basieren auf Corosync als Cluster-Engine.[^16] Corosync verwendet ein **Quorum-Modell**: Ein Knoten darf nur dann Dienste betreiben oder übernehmen, wenn er weiß, dass die Mehrheit der Cluster-Knoten erreichbar ist. Das verhindert das sogenannte „Split-Brain“-Problem, bei dem zwei isolierte Knoten unabhängig voneinander dieselben Daten schreiben.
+Proxmox-Cluster basieren auf Corosync als Cluster-Engine.[^16] Corosync verwendet ein **Quorum-Modell**: Ein Knoten darf nur dann Dienste betreiben oder übernehmen, wenn er weiß, dass die Mehrheit der Cluster-Knoten erreichbar ist. Das verhindert das sogenannte „Split-Brain"-Problem, bei dem zwei isolierte Knoten unabhängig voneinander dieselben Daten schreiben.
 
 <table>
 <colgroup>
@@ -457,7 +491,7 @@ Proxmox-Cluster basieren auf Corosync als Cluster-Engine.[^16] Corosync verwende
 </tbody>
 </table>
 
-## B.2.2 Referenzarchitektur: 3-Node-Cluster
+### B.2.2 Referenzarchitektur: 3-Node-Cluster
 
 Die folgende Architektur ist für eine mittlere Organisation mit 50–500 Nutzern ausgelegt. Sie bietet Ausfallsicherheit bei Ausfall eines beliebigen Knotens.
 
@@ -468,7 +502,7 @@ Die folgende Architektur ist für eine mittlere Organisation mit 50–500 Nutzer
 | Node 3 (pve-03)    | Aktiver Knoten / Ceph-OSD      | 8+ Core, 32–64 GB RAM, HDD+NVMe | Ceph-Storage, leichtere Last      |
 | QDevice (optional) | Quorum-Zeuge                   | Raspberry Pi 4                  | Nur bei 2 Vollknoten nötig        |
 
-## B.2.3 Netzwerktopologie
+### B.2.3 Netzwerktopologie
 
 Für produktiven Cluster-Betrieb sind drei logisch getrennte Netzwerke empfohlen:[^17]
 
@@ -481,11 +515,11 @@ Für produktiven Cluster-Betrieb sind drei logisch getrennte Netzwerke empfohlen
 
 Das Corosync-Netz muss physisch oder logisch vom Management-Netz getrennt sein. Ein gemeinsames Netz führt zu Timeouts unter Last und damit zu unnötigen Failover-Ereignissen.
 
-# B.3 Storage-Konzept: Ceph als verteilter OSS-Speicher
+## B.3 Storage-Konzept: Ceph als verteilter OSS-Speicher
 
 Proxmox VE integriert Ceph nativ — Installation, Verwaltung und Monitoring direkt über die Proxmox-Oberfläche.[^18] Ceph ist ein verteiltes Speichersystem: Daten werden in Echtzeit über mehrere Nodes repliziert. Der Ausfall eines Nodes bedeutet keinen Datenverlust.[^19]
 
-## B.3.1 Ceph-Komponenten im Überblick
+### B.3.1 Ceph-Komponenten im Überblick
 
 | **Komponente**              | **Funktion**                    | **Minimum**               |
 |-----------------------------|---------------------------------|---------------------------|
@@ -494,11 +528,11 @@ Proxmox VE integriert Ceph nativ — Installation, Verwaltung und Monitoring dir
 | MGR (Manager)               | Statistiken, Dashboard, Plugins | 1–2 MGRs                  |
 | MDS (Metadata Server)       | Nur für CephFS (Dateisystem)    | Optional                  |
 
-## B.3.2 Replikation und Ausfallsicherheit
+### B.3.2 Replikation und Ausfallsicherheit
 
 Ceph repliziert standardmäßig jeden Datenblock dreifach (Replication Factor 3). Der Cluster bleibt lesbar und schreibbar, solange mindestens 2 von 3 Nodes verfügbar sind. Bei NVMe als OSD-Medium für die Ceph-Journal-Disks (WAL/DB) ist die Performance auch unter Replikation produktionstauglich.
 
-## B.3.3 Storage-Typen für verschiedene Dienste
+### B.3.3 Storage-Typen für verschiedene Dienste
 
 | **Storage-Typ**                | **Ceph-Pendant**         | **Geeignet für**                          |
 |--------------------------------|--------------------------|-------------------------------------------|
@@ -518,7 +552,7 @@ Ceph repliziert standardmäßig jeden Datenblock dreifach (Replication Factor 3)
 </tbody>
 </table>
 
-# B.4 Dienste-Verteilung: LXC-Container vs. KVM-VM
+## B.4 Dienste-Verteilung: LXC-Container vs. KVM-VM
 
 Proxmox bietet zwei Virtualisierungsebenen: LXC-Container teilen den Kernel des Hosts und sind ressourcenschonender; KVM-VMs haben einen vollständig isolierten Kernel und eignen sich für Dienste, die Kernel-Module benötigen oder maximale Isolation erfordern.[^20]
 
@@ -535,7 +569,7 @@ Proxmox bietet zwei Virtualisierungsebenen: LXC-Container teilen den Kernel des 
 | Gitea (optional)      | LXC          | Go-Dienst, minimale Ressourcen                | Ja                 |
 | OpenTalk / Jitsi      | KVM          | Medienprozessierung, hoher CPU-Bedarf         | Optional           |
 
-## B.4.1 HA-Konfiguration
+### B.4.1 HA-Konfiguration
 
 Proxmox HA Manager überwacht laufende VMs und Container.[^21] Beim Ausfall eines Knotens werden HA-aktivierte Dienste automatisch auf einem der verbleibenden Knoten neu gestartet. Typische Failover-Zeit: 30–90 Sekunden.
 
@@ -545,7 +579,7 @@ Proxmox HA Manager überwacht laufende VMs und Container.[^21] Beim Ausfall eine
 | Aktiv/Aktiv (Load Balancing) | Nginx Reverse Proxy, WireGuard       | 0 Sek.            | Erfordert externe LB oder VRRP (keepalived) |
 | Kalt-Standby                 | Collabora, OpenTalk                  | 2–5 Min.          | Nur bei Bedarf gestartet                    |
 
-# B.5 Backup-Konzept mit Proxmox Backup Server
+## B.5 Backup-Konzept mit Proxmox Backup Server
 
 Proxmox Backup Server (PBS) ist eine dedizierte OSS-Backup-Lösung, die eng mit Proxmox VE integriert ist.[^22] PBS unterstützt inkrementelle, deduplizierte Backups mit clientseitiger Verschlüsselung.
 
@@ -565,7 +599,7 @@ Empfohlene Backup-Strategie für mittlere Organisationen (3-2-1-Regel):
 
 - Backup 3: Offsite — Hetzner Storage Box oder zweiter Standort via PBS-Sync
 
-# B.6 Monitoring und Betrieb
+## B.6 Monitoring und Betrieb
 
 Proxmox VE bringt ein eingebautes Monitoring-Dashboard mit — ausreichend für Übersicht und Alerting auf Node-Ebene. Für tieferes Service-Monitoring empfiehlt sich Checkmk Raw Edition (OSS).[^23]
 
@@ -577,7 +611,7 @@ Proxmox VE bringt ein eingebautes Monitoring-Dashboard mit — ausreichend für 
 | Log-Aggregation    | Loki + Grafana            | Zentrale Log-Auswertung aller Container und VMs          |
 | Alerting           | Checkmk oder Alertmanager | E-Mail / Matrix-Benachrichtigung bei Ausfall             |
 
-# B.7 Gesamtbild: OSS-Stack mit Proxmox-Infrastrukturschicht
+## B.7 Gesamtbild: OSS-Stack mit Proxmox-Infrastrukturschicht
 
 Die folgende Tabelle zeigt den vollständigen Stack einer mittleren Organisation mit Proxmox als Infrastrukturschicht:
 
@@ -597,7 +631,7 @@ Die folgende Tabelle zeigt den vollständigen Stack einer mittleren Organisation
 | Clients       | Desktop                   | LibreOffice, Thunderbird, Element | Fat Client, lokal           |
 | Clients       | Mobile                    | DAVx⁵, Element, WireGuard         | Android / iOS               |
 
-# B.8 Aufwand-Nutzen-Bewertung
+## B.8 Aufwand-Nutzen-Bewertung
 
 | **Kriterium**         | **Flat-Server-Betrieb**         | **Mit Proxmox-Cluster**                         |
 |-----------------------|---------------------------------|-------------------------------------------------|
@@ -611,6 +645,8 @@ Die folgende Tabelle zeigt den vollständigen Stack einer mittleren Organisation
 | Empfehlung ab         | —                               | 3+ Server, Ausfallsicherheit gefordert          |
 
 Fazit: Proxmox VE lohnt sich für mittlere Organisationen, sobald mehr als zwei physische Server vorhanden sind und Ausfallsicherheit eine Anforderung ist. Der initiale Mehraufwand bei der Einrichtung amortisiert sich schnell durch reduzierten operativen Aufwand, integriertes Backup und die Möglichkeit, Wartungsarbeiten ohne Downtime durchzuführen.
+
+---
 
 # Anhang C – Kostenvergleich europäischer IaaS-Anbieter
 
@@ -628,9 +664,9 @@ Dieser Anhang vergleicht europäische IaaS-Anbieter für den Betrieb des OSS-Pla
 </tbody>
 </table>
 
-# C.1 Ressourcen-Sizing für 100 Nutzer
+## C.1 Ressourcen-Sizing für 100 Nutzer
 
-Grundlage ist der vollständige OSS-Stack aus dem Hauptkonzept.[^24]
+Grundlage ist der vollständige OSS-Stack aus dem Hauptkonzept (Kapitel 3–5).
 
 | **Dienst**                       | **vCPU** | **RAM** | **Storage** | **Bemerkung**                             |
 |----------------------------------|----------|---------|-------------|-------------------------------------------|
@@ -656,9 +692,9 @@ Grundlage ist der vollständige OSS-Stack aus dem Hauptkonzept.[^24]
 </tbody>
 </table>
 
-# C.2 Europäische IaaS-Anbieter im Überblick
+## C.2 Europäische IaaS-Anbieter im Überblick
 
-Alle genannten Anbieter sind europäisch, DSGVO-konform und verfügen über BSI C5 Typ 2.[^25]
+Alle genannten Anbieter sind europäisch, DSGVO-konform und verfügen über BSI C5 Typ 2.[^24]
 
 | **Anbieter**       | **Hauptsitz**    | **RZ Deutschland**    | **BSI C5 Typ 2** | **CLOUD Act** | **Basis**        |
 |--------------------|------------------|-----------------------|------------------|---------------|------------------|
@@ -667,11 +703,11 @@ Alle genannten Anbieter sind europäisch, DSGVO-konform und verfügen über BSI 
 | Open Telekom Cloud | Bonn, DE         | Biere, Magdeburg      | ✓                | Nein          | OpenStack        |
 | IONOS Cloud        | Montabaur, DE    | Frankfurt, Berlin     | ✓ (Typ 1/2)      | Nein          | Eigenentwicklung |
 
-**Hetzner** erhält im März 2026 das BSI C5:2020 Typ 2 Testat und ist zusätzlich als KRITIS-Betreiber nach §8a BSIG zertifiziert.[^26]
+**Hetzner** erhält im März 2026 das BSI C5:2020 Typ 2 Testat und ist zusätzlich als KRITIS-Betreiber nach §8a BSIG zertifiziert.[^25]
 
-**OVHcloud und Open Telekom Cloud** betreiben ihre Infrastruktur auf OpenStack-Basis. Das ist für den Alltagsbetrieb von VMs transparent — relevant wird es nur bei direkter API-Nutzung (Terraform, Swift-Objektspeicher). OVHcloud erklärt explizit, nicht dem US CLOUD Act zu unterliegen.[^27]
+**OVHcloud und Open Telekom Cloud** betreiben ihre Infrastruktur auf OpenStack-Basis. Das ist für den Alltagsbetrieb von VMs transparent — relevant wird es nur bei direkter API-Nutzung (Terraform, Swift-Objektspeicher). OVHcloud erklärt explizit, nicht dem US CLOUD Act zu unterliegen.[^26]
 
-# C.3 OpenStack-Unterstützung: Wann relevant, wann nicht?
+## C.3 OpenStack-Unterstützung: Wann relevant, wann nicht?
 
 Eine häufige Frage: Bringt ein OpenStack-basierter Anbieter (OVHcloud, OTC) einen praktischen Vorteil gegenüber Hetzner?
 
@@ -699,13 +735,13 @@ Für den beschriebenen Anwendungsfall — OSS-Dienste auf Cloud-VMs, Administrat
 </tbody>
 </table>
 
-# C.4 Preisvergleich: Hetzner vs. OVHcloud
+## C.4 Preisvergleich: Hetzner vs. OVHcloud
 
-Open Telekom Cloud wird nicht in den direkten Zahlenvergleich einbezogen, da das Preismodell stundenbasiert ohne fixe Monatstarife funktioniert und ein fairer Vergleich einen eigenen Preisrechner-Durchlauf erfordert. OTC positioniert sich preislich über Hetzner und OVHcloud, bietet dafür umfangreichere Managed Services und stärkere Enterprise-SLAs.
+Open Telekom Cloud wird nicht in den direkten Zahlenvergleich einbezogen, da das Preismodell stundenbasiert ohne fixe Monatstarife funktioniert und ein fairer Vergleich einen eigenen Preisrechner-Durchlauf erfordert. OTC positioniert sich preislich über Hetzner und OVHcloud, bietet dafür umfangreichere Managed Services und stärkere Enterprise-SLAs.[^27][^28]
 
-## C.4.1 Hetzner Cloud
+### C.4.1 Hetzner Cloud
 
-Preise exkl. MwSt., nach Preisanpassung 15. Juni 2026.[^28]
+Preise exkl. MwSt., nach Preisanpassung 15. Juni 2026.[^29]
 
 | **VM / Dienst**                   | **Typ**      | **vCPU** | **RAM** | **€/Monat** |
 |-----------------------------------|--------------|----------|---------|-------------|
@@ -723,11 +759,11 @@ Preise exkl. MwSt., nach Preisanpassung 15. Juni 2026.[^28]
 |------------------------------------------|-----------------|
 | **Σ Hetzner Cloud Gesamt (exkl. MwSt.)** | **~83 €/Monat** |
 
-*Inkl. 19% MwSt.: ~ 99 €/Monat — **0,99 €/Nutzer/Monat***
+*Inkl. 19% MwSt.: ~ 99 €/Monat — **0,99 €/Nutzer/Monat***
 
-## C.4.2 OVHcloud
+### C.4.2 OVHcloud
 
-Vergleichbarer Stack, Preise inkl. MwSt.[^29]
+Vergleichbarer Stack, Preise inkl. MwSt.[^30]
 
 | **VM / Dienst**                        | **Typ** | **vCPU** | **RAM** | **€/Monat (inkl. MwSt.)** |
 |----------------------------------------|---------|----------|---------|---------------------------|
@@ -746,7 +782,7 @@ Vergleichbarer Stack, Preise inkl. MwSt.[^29]
 
 ***0,66 €/Nutzer/Monat***
 
-## C.4.3 Direktvergleich
+### C.4.3 Direktvergleich
 
 | **Kriterium**                  | **Hetzner Cloud**       | **OVHcloud**        | **Open Telekom Cloud**                     |
 |--------------------------------|-------------------------|---------------------|--------------------------------------------|
@@ -762,7 +798,7 @@ Vergleichbarer Stack, Preise inkl. MwSt.[^29]
 | OpenStack-Basis                | Nein (Eigenentwicklung) | Ja                  | Ja                                         |
 | Zielgruppe                     | KMU, Entwickler, NGO    | KMU bis Mittelstand | Öffentliche Verwaltung, KRITIS, Enterprise |
 
-# C.5 Versteckte Kosten und Fallstricke
+## C.5 Versteckte Kosten und Fallstricke
 
 | **Kostenart**             | **Hetzner**      | **OVHcloud**  | **OTC**                  |
 |---------------------------|------------------|---------------|--------------------------|
@@ -785,9 +821,9 @@ Vergleichbarer Stack, Preise inkl. MwSt.[^29]
 </tbody>
 </table>
 
-# C.6 Einordnung: Microsoft 365 als Vergleichsmaßstab
+## C.6 Einordnung: Microsoft 365 als Vergleichsmaßstab
 
-Microsoft 365 Business Standard kostet Stand 2026 ca. 12,50 €/Nutzer/Monat (exkl. MwSt.), also ~1.488 €/Jahr für 100 Nutzer.[^30]
+Microsoft 365 Business Standard kostet Stand 2026 ca. 12,50 €/Nutzer/Monat (exkl. MwSt.), also ~1.488 €/Jahr für 100 Nutzer.[^31]
 
 | **Lösung**                      | **€/Nutzer/Monat** | **€/Jahr (100 Nutzer)** | **Einsparung ggü. M365** | **Souveränität**    |
 |---------------------------------|--------------------|-------------------------|--------------------------|---------------------|
@@ -810,7 +846,7 @@ Microsoft 365 Business Standard kostet Stand 2026 ca. 12,50 €/Nutzer/Monat (ex
 </tbody>
 </table>
 
-# C.7 Empfehlung
+## C.7 Empfehlung
 
 | **Szenario**                           | **Empfohlener Anbieter** | **Begründung**                                                                |
 |----------------------------------------|--------------------------|-------------------------------------------------------------------------------|
@@ -822,31 +858,37 @@ Microsoft 365 Business Standard kostet Stand 2026 ca. 12,50 €/Nutzer/Monat (ex
 
 Für eine mittlere Organisation mit 100 Nutzern ist Hetzner Cloud der pragmatische Einstieg: niedrigster Aufwand, transparente Preise, BSI C5 Typ 2 erfüllt. OVHcloud ist die kostengünstigere Alternative mit OpenStack-Unterlage für Organisationen die später Terraform oder Managed Services nutzen möchten. Open Telekom Cloud ist die richtige Wahl sobald Enterprise-SLAs, Managed Services oder eine besonders starke KRITIS-Compliance-Positionierung gefragt sind.
 
-# Anhang D: TPM-gestützte Authentifizierung als Alternative zu Shared-Secret-Verfahren
+---
 
-## Kernproblem klassischer 2FA (TOTP)
+# Anhang D – TPM-gestützte Authentifizierung als Alternative zu Shared-Secret-Verfahren
 
-TOTP-Verfahren (RFC 6238) erfordern einen identischen Seed auf Client und Server – ein „SharedSecret“, das zwangsläufig auf beiden Seiten im Klartext vorliegen muss, um den HMAC unabhängig berechnen zu können. Das ist kein Implementierungsfehler, sondern eine architektonische Eigenschaft des Verfahrens.
+## D.1 Kernproblem klassischer 2FA (TOTP)
 
-## TPM-basierter Ansatz (Windows Hello, FIDO2/WebAuthn)
+TOTP-Verfahren (RFC 6238) erfordern einen identischen Seed auf Client und Server – ein „SharedSecret", das zwangsläufig auf beiden Seiten im Klartext vorliegen muss, um den HMAC unabhängig berechnen zu können. Das ist kein Implementierungsfehler, sondern eine architektonische Eigenschaft des Verfahrens.
 
-Im Gegensatz dazu erzeugt das TPM ein asymmetrisches Schlüsselpaar lokal im Chip. Der private Schlüssel verlässt das Hardware-Modul nie – auch nicht verschlüsselt. Der Server (z. B. Microsoft) speichert nur den öffentlichen Schlüssel. PIN/Biometrie dienen lediglich dazu, eine lokale Autorisierungs-Session freizuschalten, die das TPM zur Signatur einer Challenge veranlasst. Dadurch entfällt das grundsätzliche Shared-Secret-Problem.
+## D.2 TPM-basierter Ansatz (Windows Hello, FIDO2/WebAuthn)
 
-## Schutzmechanismen
+Im Gegensatz dazu erzeugt das TPM ein asymmetrisches Schlüsselpaar lokal im Chip. Der private Schlüssel verlässt das Hardware-Modul nie – auch nicht verschlüsselt. Der Server (z. B. Microsoft) speichert nur den öffentlichen Schlüssel. PIN/Biometrie dienen lediglich dazu, eine lokale Autorisierungs-Session freizuschalten, die das TPM zur Signatur einer Challenge veranlasst. Dadurch entfällt das grundsätzliche Shared-Secret-Problem.
 
-- **PCR-Bindung (Measured Boot):** Schlüssel können an einen bestimmten, kryptographisch verketteten Boot-Zustand gesealed werden. Ein abweichender Bootpfad (z. B. fremdes Live-Linux) verändert die PCR-Werte, wodurch die Freigabe fehlschlägt.
+## D.3 Schutzmechanismen
+
+- **PCR-Bindung (Measured Boot):** Schlüssel können an einen bestimmten, kryptographisch verketteten Boot-Zustand gesealed werden. Ein abweichender Bootpfad (z. B. fremdes Live-Linux) verändert die PCR-Werte, wodurch die Freigabe fehlschlägt.
 
 - **PreBoot-PIN:** Verhindert automatische Schlüsselfreigabe allein durch passende PCR-Werte; ohne korrekte Eingabe bleibt der Schlüssel versiegelt, auch bei physischem Zugriff über externes OS.
 
 - **Anti-Hammering:** Nach begrenzter Zahl von Fehlversuchen sperrt sich der Chip selbst mit exponentiell steigender Lockout-Zeit – wirksam unabhängig vom verwendeten Betriebssystem.
 
-## Grenzen
+## D.4 Grenzen
 
-TPM-Schutz ist gerätegebunden. Schwach konfigurierte Setups (TPM-only ohne PIN, ältere Firmware) sind nicht immun gegen Bus-Sniffing-Angriffe bei physischem Zugriff – konkret nachgewiesen u. a. bei BitLocker-Konfigurationen ohne PreBoot-PIN.
+TPM-Schutz ist gerätegebunden. Schwach konfigurierte Setups (TPM-only ohne PIN, ältere Firmware) sind nicht immun gegen Bus-Sniffing-Angriffe bei physischem Zugriff – konkret nachgewiesen u. a. bei BitLocker-Konfigurationen ohne PreBoot-PIN.
 
-## Linux-Äquivalente
+## D.5 Linux-Äquivalente
 
 tpm2-tools, systemd-cryptenroll, clevis/tang bieten vergleichbare Funktionalität (Sealing, PCR-Bindung, automatisches Entschlüsseln). Für plattformneutrale, herstellerunabhängige Authentifizierung mit identischem Sicherheitsmodell (nicht-exportierbarer privater Schlüssel) bieten sich FIDO2-Hardware-Token an – im Gegensatz zu Windows Hello, das proprietär an die Microsoft-Plattform gebunden ist.
+
+---
+
+# Quellenverzeichnis
 
 [^1]: Pressemitteilung Schleswig-Holstein, 2. Oktober 2025: [Mailsystem der Landesverwaltung komplett auf Open Source umgestellt](https://www.schleswig-holstein.de/DE/landesregierung/ministerien-behoerden/I/Presse/PI/2025/cds/251006_cds_ox)
 
@@ -854,15 +896,15 @@ tpm2-tools, systemd-cryptenroll, clevis/tang bieten vergleichbare Funktionalitä
 
 [^3]: Univention Nubus (UCS): [univention.de/produkte/nubus/](https://www.univention.de/produkte/nubus/)
 
-[^4]: Dataport AöR – IT-Dienstleister der norddeutschen Länder: [dataport.de](https://www.dataport.de/)
+[^4]: OpenTalk (Videokonferenz, OSS): [opentalk.eu](https://opentalk.eu/)
 
-[^5]: Einsparungen und Zwischenfazit (Dezember 2025): [Digitale Souveränität ist möglich und wirtschaftlich](https://www.schleswig-holstein.de/DE/landesregierung/ministerien-behoerden/I/_startseite/Artikel2025/IV/251204_cds_digitale_souveraenitaet)
+[^5]: Pressemitteilung Schleswig-Holstein, Dezember 2025: [Digitale Souveränität ist möglich und wirtschaftlich](https://www.schleswig-holstein.de/DE/landesregierung/ministerien-behoerden/I/_startseite/Artikel2025/IV/251204_cds_digitale_souveraenitaet)
 
-[^6]: HiSolutions Research, Dezember 2025: [Positive Stimmung bei der Open-Source-Migration in Schleswig-Holstein](https://research.hisolutions.com/2025/12/positive-stimmung-bei-der-open-source-migration-in-schleswig-holstein/)
+[^6]: Dataport AöR – IT-Dienstleister der norddeutschen Länder: [dataport.de](https://www.dataport.de/)
 
-[^7]: OpenTalk (Videokonferenz, OSS): [opentalk.eu](https://opentalk.eu/)
+[^7]: Einsparungen und wirtschaftliche Bilanz der OSS-Migration in SH: vgl. [^5]
 
-[^8]: openDesk – ZenDiS: [zendis.de/opendesk](https://zendis.de/opendesk)
+[^8]: HiSolutions Research, Dezember 2025: [Positive Stimmung bei der Open-Source-Migration in Schleswig-Holstein](https://research.hisolutions.com/2025/12/positive-stimmung-bei-der-open-source-migration-in-schleswig-holstein/)
 
 [^9]: RFC 5545 – iCalendar: [datatracker.ietf.org/doc/html/rfc5545](https://datatracker.ietf.org/doc/html/rfc5545)
 
@@ -872,38 +914,40 @@ tpm2-tools, systemd-cryptenroll, clevis/tang bieten vergleichbare Funktionalitä
 
 [^12]: BFH-Interview mit Digitalisierungsminister Schrödter, März 2026: [Open Source als Schlüssel zur Souveränität in der digitalen öffentlichen Infrastruktur](https://www.bfh.ch/de/aktuell/storys/2026/open-source-fuer-digitale-souveraenitaet/)
 
-[^13]:
+[^13]: openDesk – ZenDiS: [zendis.de/opendesk](https://zendis.de/opendesk)
 
 [^14]: Proxmox VE Dokumentation: [pve.proxmox.com/wiki/Main_Page](https://pve.proxmox.com/wiki/Main_Page)
 
-[^15]: Proxmox HA Manager: [pve.proxmox.com/wiki/High_Availability](https://pve.proxmox.com/wiki/High_Availability)
+[^15]: Proxmox vs. VMware vSphere – Vergleich nach Broadcom-Übernahme: [pve.proxmox.com – Comparison](https://pve.proxmox.com/wiki/Comparison_with_other_products)
 
-[^16]: Ceph Storage – Proxmox Integration: [pve.proxmox.com – Hyper-Converged Ceph](https://pve.proxmox.com/wiki/Deploy_Hyper-Converged_Ceph_Cluster)
+[^16]: Corosync Cluster Engine (Quorum): [corosync.github.io](https://corosync.github.io/corosync/)
 
-[^17]: Proxmox LXC Container Dokumentation: [pve.proxmox.com/wiki/Linux_Container](https://pve.proxmox.com/wiki/Linux_Container)
+[^17]: Proxmox SDN (Software Defined Networking): [pve.proxmox.com/wiki/Software_Defined_Network](https://pve.proxmox.com/wiki/Software_Defined_Network)
 
-[^18]: Proxmox Backup Server: [proxmox.com/de/proxmox-backup-server](https://www.proxmox.com/de/proxmox-backup-server)
+[^18]: Ceph Storage – Proxmox Integration: [pve.proxmox.com – Hyper-Converged Ceph](https://pve.proxmox.com/wiki/Deploy_Hyper-Converged_Ceph_Cluster)
 
-[^19]: Corosync Cluster Engine (Quorum): [corosync.github.io](https://corosync.github.io/corosync/)
+[^19]: Ceph – Open Source Storage: [ceph.io](https://ceph.io/)
 
-[^20]: Ceph – Open Source Storage: [ceph.io](https://ceph.io/)
+[^20]: Proxmox LXC Container Dokumentation: [pve.proxmox.com/wiki/Linux_Container](https://pve.proxmox.com/wiki/Linux_Container)
 
-[^21]: Proxmox SDN (Software Defined Networking): [pve.proxmox.com/wiki/Software_Defined_Network](https://pve.proxmox.com/wiki/Software_Defined_Network)
+[^21]: Proxmox HA Manager: [pve.proxmox.com/wiki/High_Availability](https://pve.proxmox.com/wiki/High_Availability)
 
-[^22]: Checkmk OSS-Edition (Monitoring): [checkmk.com – Raw Edition](https://checkmk.com/de/product/editions)
+[^22]: Proxmox Backup Server: [proxmox.com/de/proxmox-backup-server](https://www.proxmox.com/de/proxmox-backup-server)
 
-[^23]: Proxmox vs. VMware vSphere – Vergleich: [pve.proxmox.com – Comparison](https://pve.proxmox.com/wiki/Comparison_with_other_products)
+[^23]: Checkmk OSS-Edition (Monitoring): [checkmk.com – Raw Edition](https://checkmk.com/de/product/editions)
 
-[^24]: Hetzner Preisanpassung 15. Juni 2026 (exkl. MwSt.): [docs.hetzner.com – Price Adjustment](https://docs.hetzner.com/general/infrastructure-and-availability/price-adjustment/)
+[^24]: BSI C5 Kriterienkatalog: [bsi.bund.de – Kriterienkatalog C5](https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Empfehlungen-nach-Angriffszielen/Cloud-Computing/Kriterienkatalog-C5/kriterienkatalog-c5_node.html)
 
 [^25]: Hetzner BSI C5:2020 Typ 2 Testat (März 2026): [hetzner.com – BSI C5 Zertifizierung](https://www.hetzner.com/de/news/hetzner-receives-bsi-c5-certification/)
 
-[^26]: OVHcloud VPS Deutschland (inkl. MwSt.): [ovhcloud.com/de/vps/](https://www.ovhcloud.com/de/vps/)
+[^26]: OVHcloud: kein US CLOUD Act Risiko: [ovhcloud.com – „Your service is not subject to the US CLOUD Act"](https://www.ovhcloud.com/en/vps/)
 
-[^27]: OVHcloud: kein US CLOUD Act Risiko: [ovhcloud.com/en/vps/ – „Your service is not subject to the US CLOUD Act“](https://www.ovhcloud.com/en/vps/)
+[^27]: Open Telekom Cloud BSI C5 Typ 2: [telekom.com – OTC BSI C5 Zertifikat](https://www.telekom.com/de/medien/medieninformationen/detail/open-telekom-cloud-erhaelt-bsi-c5-zertifikat-605188)
 
-[^28]: Open Telekom Cloud BSI C5 Typ 2: [telekom.com – OTC BSI C5 Zertifikat](https://www.telekom.com/de/medien/medieninformationen/detail/open-telekom-cloud-erhaelt-bsi-c5-zertifikat-605188)
+[^28]: Open Telekom Cloud Preismodell Computing: [public.t-cloud.com – Preismodelle Computing](https://public.t-cloud.com/de/preise/preismodelle/computing-container)
 
-[^29]: Open Telekom Cloud Preismodell Computing: [public.t-cloud.com – Preismodelle Computing](https://public.t-cloud.com/de/preise/preismodelle/computing-container)
+[^29]: Hetzner Preisanpassung 15. Juni 2026 (exkl. MwSt.): [docs.hetzner.com – Price Adjustment](https://docs.hetzner.com/general/infrastructure-and-availability/price-adjustment/)
 
-[^30]: BSI C5 Kriterienkatalog: [bsi.bund.de – Kriterienkatalog C5](https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Empfehlungen-nach-Angriffszielen/Cloud-Computing/Kriterienkatalog-C5/kriterienkatalog-c5_node.html)
+[^30]: OVHcloud VPS Deutschland (inkl. MwSt.): [ovhcloud.com/de/vps/](https://www.ovhcloud.com/de/vps/)
+
+[^31]: Microsoft 365 Business Standard: [microsoft.com/de-de/microsoft-365/business](https://www.microsoft.com/de-de/microsoft-365/business/microsoft-365-business-standard) – ca. 12,50 €/Nutzer/Monat (Stand 2026)
