@@ -420,6 +420,56 @@ Die Wahl des Ansatzes hängt primär von Skalierung und Betriebsmodell ab:
 
 Das Schleswig-Holstein-Projekt ist dabei das bisher überzeugendste Praxisbeispiel, dass der OSS-Weg in großem Maßstab funktioniert — wirtschaftlich, technisch und politisch. Es bestätigt die Grundannahmen des eigenen Konzepts und liefert konkrete Migrationserfahrungen, von denen auch kleinere Initiativen profitieren können.
 
+## A.6 Microsoft 365 im Architekturvergleich: Was bei der Migration abgedeckt wird
+
+Microsoft 365 ist der de-facto-Standard, von dem migriert wird. Die folgende Übersicht zeigt, dass jede M365-Funktion im OSS-Stack vollständig abgedeckt ist — und ordnet beide Seiten in das Client-Server-Architekturmodell ein.
+
+### A.6.1 Architekturprinzip: Fat Server vs. Thin Server
+
+Microsoft 365 folgt einem **Fat-Server-Prinzip**: Anwendungslogik, Datenhaltung, Rendering und Geschäftslogik laufen auf Microsofts Cloud-Infrastruktur. Die Desktop-Anwendungen (Outlook, Word, Excel) sind zwar lokal installierte Fat Clients, aber zunehmend von permanenter Cloud-Anbindung abhängig — für Lizenzvalidierung, Co-Authoring, Echtzeit-Sync und KI-Funktionen (Copilot). Ohne Serververbindung ist die Funktionalität eingeschränkt; ohne Lizenzserver wird sie nach kurzer Toleranzzeit vollständig gesperrt.
+
+Das eigene OSS-Konzept kehrt dieses Verhältnis um: Der **Server ist dünn** (Speicher, Sync, Routing), der **Client ist autonom** (Anwendungslogik, Rendering, KI-Inferenz). Offline-Fähigkeit ist kein Notfallmodus, sondern Normalzustand.
+
+| **Architekturmerkmal**       | **Microsoft 365**                          | **OSS-Konzept (dieses Dokument)**          |
+|------------------------------|--------------------------------------------|--------------------------------------------|
+| Anwendungslogik              | Server (Cloud) + Client (lokal)            | Client (lokal)                             |
+| Datenhaltung                 | Server (Cloud, US CLOUD Act)               | Server (eigene Infrastruktur, EU)          |
+| Rendering (Dokumente)        | Server (Office Online) oder Client         | Client (LibreOffice)                       |
+| KI-Funktionen                | Server (Copilot, Cloud-only)               | Client (Ollama, lokale GPU)                |
+| Lizenzabhängigkeit           | Permanente Cloud-Validierung               | Keine (OSS)                                |
+| Offline-Fähigkeit            | Eingeschränkt (Toleranzzeit)               | Vollständig                                |
+| Vendor Lock-in               | Hoch (proprietäre Formate, Protokolle)     | Keiner (offene Standards)                  |
+| Kontrolle über Daten         | Microsoft (Vertrag, nicht Technik)         | Betreiber (Technik und Vertrag)            |
+
+### A.6.2 Funktionsabdeckung: M365 → OSS-Äquivalent
+
+Bei einer Migration von Microsoft 365 auf den OSS-Stack geht keine Funktion verloren. Die folgende Tabelle zeigt die vollständige Abdeckung:
+
+| **M365-Komponente**          | **Funktion**                        | **OSS-Äquivalent**                     | **Kapitel** |
+|------------------------------|-------------------------------------|----------------------------------------|-------------|
+| Exchange Online              | E-Mail, Kalender, Kontakte          | Postfix + Dovecot + Nextcloud          | 3, 5        |
+| Outlook (Desktop)            | Mail-Client, Kalender-Client        | Thunderbird (+ TbSync)                 | 4           |
+| Outlook (Web/OWA)            | Webmail                             | Nextcloud Mail / Roundcube             | 3           |
+| Word / Excel / PowerPoint    | Office-Suite (lokal)                | LibreOffice                            | 4           |
+| Office Online                | Office-Suite (Browser)              | Collabora Online (optional)            | 3           |
+| OneDrive                     | Dateisync, Cloud-Speicher           | Nextcloud + Desktop-Client             | 3, 4        |
+| SharePoint                   | Dokumentenmanagement, Intranet      | Nextcloud + Wiki (optional)            | 3           |
+| Teams (Chat)                 | Messaging, Kanäle                   | Matrix / Element                       | 3, 4        |
+| Teams (Video)                | Videokonferenz                      | Element / OpenTalk / Jitsi             | 3           |
+| Azure AD / Entra ID          | Identitätsmanagement, SSO           | Keycloak / Univention Nubus            | 3, A.4      |
+| Microsoft To Do / Planner    | Aufgabenverwaltung                  | Nextcloud Tasks / Deck                 | 5           |
+| Power Automate               | Workflow-Automatisierung            | n8n / Node-RED (selbst-gehostet)       | —           |
+| Microsoft Copilot            | KI-Assistent (Cloud)                | Ollama + Open WebUI (lokal)            | 4           |
+| BitLocker + Windows Hello    | Verschlüsselung, Authentifizierung  | LUKS + TPM / FIDO2                     | D           |
+| Microsoft Defender           | Endpoint-Schutz                     | ClamAV + rspamd + Firewall             | 3           |
+| Intune                       | Geräteverwaltung (MDM)              | Ansible + Fleet (optional)             | —           |
+
+Die Spalte *Kapitel* verweist auf die Stelle in diesem Dokument, an der die jeweilige OSS-Lösung beschrieben wird. Funktionen ohne Kapitelverweis (—) sind nicht Kernbestandteil dieses Konzepts, aber über etablierte OSS-Werkzeuge abdeckbar.
+
+### A.6.3 Zusammenfassung
+
+Der OSS-Stack deckt sämtliche Funktionen ab, die Microsoft 365 bietet. Die architektonischen Unterschiede — lokale Autonomie statt Cloud-Abhängigkeit, offene Protokolle statt proprietärer Formate, eigene Datenhaltung statt Fremdkontrolle — sind dabei keine Einschränkung, sondern der Grund für die Migration.
+
 ---
 
 # Anhang B – Proxmox VE als Infrastrukturschicht für mittlere Organisationen
